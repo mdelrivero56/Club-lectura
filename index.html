@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La Hoja de Ruta — Club de Lectura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F3ECDC;
+    --cream-2:#EAE1CC;
+    --ink:#241F18;
+    --ink-soft:#4A4234;
+    --wine:#7C2A3B;
+    --wine-dark:#5E1F2C;
+    --forest:#33473A;
+    --forest-dark:#243329;
+    --gold:#B4863C;
+    --gold-light:#D9B876;
+    --paper-line: rgba(36,31,24,0.08);
+    --radius-page: 3px;
+    --shadow-book: 0 18px 40px -18px rgba(36,31,24,0.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-padding-top: env(safe-area-inset-top,0px);}
+  body{
+    margin:0;
+    background:var(--cream);
+    background-image:
+      radial-gradient(circle at 8% 12%, rgba(124,42,59,0.05), transparent 40%),
+      radial-gradient(circle at 92% 85%, rgba(51,71,58,0.06), transparent 45%);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    color:var(--ink);
+    margin:0;
+  }
+  .container{max-width:1040px; margin:0 auto; padding:0 24px;}
+  a{color:inherit;}
+
+  /* ---------- NAV (bookmark tabs) ---------- */
+  header.top{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+    background:var(--cream);
+    border-bottom:1px solid var(--paper-line);
+  }
+  .nav-wrap{
+    max-width:1040px; margin:0 auto; padding:14px 24px 0;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    flex-wrap:wrap;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark{
+    width:34px; height:34px; border-radius:2px;
+    background:linear-gradient(135deg,var(--wine),var(--wine-dark));
+    position:relative; flex:none;
+    box-shadow: inset -3px 0 0 rgba(0,0,0,0.15);
+  }
+  .brand-mark::after{
+    content:"";
+    position:absolute; left:6px; top:6px; right:6px; bottom:6px;
+    border:1px solid rgba(255,255,255,0.35);
+  }
+  .brand-text{font-family:'Fraunces',serif; font-weight:600; font-size:1.05rem; letter-spacing:.2px;}
+  .brand-text small{display:block; font-family:'Inter',sans-serif; font-weight:500; font-size:.68rem; color:var(--ink-soft); letter-spacing:.3px;}
+
+  nav.tabs{display:flex; gap:2px; margin-top:12px; flex-wrap:wrap;}
+  nav.tabs button{
+    font-family:'Inter',sans-serif; font-weight:600; font-size:.86rem;
+    background:var(--cream-2); color:var(--ink-soft);
+    border:1px solid var(--paper-line); border-bottom:none;
+    padding:10px 16px 12px;
+    border-radius:6px 6px 0 0;
+    cursor:pointer;
+    position:relative; top:1px;
+    transition:background .15s ease, color .15s ease;
+  }
+  nav.tabs button:hover{background:#e2d7bb;}
+  nav.tabs button.active{
+    background:var(--cream); color:var(--wine);
+    border-color:var(--paper-line);
+  }
+  nav.tabs button.active::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:-1px; height:2px;
+    background:var(--cream);
+  }
+
+  main{padding-bottom:80px;}
+  section.view{display:none; padding-top:44px;}
+  section.view.active{display:block; animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .eyebrow{font-size:.78rem; color:var(--wine); font-weight:600; margin-bottom:8px;}
+
+  /* ---------- HERO: open book ---------- */
+  .hero{
+    display:grid; grid-template-columns:1fr 1fr;
+    background:linear-gradient(180deg,#FBF8F0,#F2E9D6);
+    border:1px solid var(--paper-line);
+    border-radius:var(--radius-page);
+    box-shadow:var(--shadow-book);
+    overflow:hidden;
+    position:relative;
+    min-height:380px;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; left:50%; top:0; bottom:0; width:60px;
+    transform:translateX(-50%);
+    background:linear-gradient(90deg, rgba(0,0,0,0.10), rgba(0,0,0,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.10));
+    pointer-events:none;
+  }
+  .hero-page{padding:44px 40px;}
+  .hero-page.left{border-right:1px solid var(--paper-line);}
+  .hero-title{font-size:2.5rem; line-height:1.05; margin-bottom:18px;}
+  .hero-title em{font-style:italic; color:var(--wine); font-weight:500;}
+  .hero-sub{color:var(--ink-soft); font-size:1rem; max-width:38ch; margin-bottom:26px;}
+  .hero-actions{display:flex; gap:12px; flex-wrap:wrap;}
+
+  .btn{
+    font-family:'Inter',sans-serif; font-weight:600; font-size:.88rem;
+    padding:11px 20px; border-radius:4px; border:1px solid transparent;
+    cursor:pointer; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-wine{background:var(--wine); color:#fff;}
+  .btn-wine:hover{background:var(--wine-dark);}
+  .btn-outline{background:transparent; border-color:var(--ink); color:var(--ink);}
+  .btn-outline:hover{background:var(--ink); color:var(--cream);}
+  .btn-forest{background:var(--forest); color:#fff;}
+  .btn-forest:hover{background:var(--forest-dark);}
+  .btn-sm{padding:8px 14px; font-size:.8rem;}
+
+  .hero-page.right{
+    background:var(--forest);
+    color:#EFE9D8;
+    display:flex; flex-direction:column; justify-content:center; gap:18px;
+  }
+  .hero-stat-row{display:flex; gap:28px; flex-wrap:wrap;}
+  .hero-stat .num{font-family:'Fraunces',serif; font-size:2.1rem; font-weight:600; color:var(--gold-light);}
+  .hero-stat .lab{font-size:.78rem; color:#CBD6C8; margin-top:2px;}
+  .hero-quote{
+    font-family:'Fraunces',serif; font-style:italic; font-size:1.05rem;
+    border-left:2px solid var(--gold-light); padding-left:16px; color:#EFE9D8;
+    max-width:34ch;
+  }
+
+  /* ---------- Sections generic ---------- */
+  .section-head{max-width:60ch; margin-bottom:34px;}
+  .section-head h2{font-size:1.9rem;}
+  .section-head p{color:var(--ink-soft); margin-top:10px;}
+
+  .card{
+    background:#FBF8F0; border:1px solid var(--paper-line); border-radius:var(--radius-page);
+    padding:26px;
+  }
+
+  /* ---------- Fotos ---------- */
+  .photo-strip{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 52px;
+  }
+  .photo-strip figure{margin:0; border-radius:var(--radius-page); overflow:hidden; border:1px solid var(--paper-line); background:#000;}
+  .photo-strip img{width:100%; height:160px; object-fit:cover; display:block; opacity:.94;}
+  .photo-strip figcaption{
+    padding:10px 12px; font-size:.78rem; color:var(--ink-soft); background:#FBF8F0;
+    border-top:1px solid var(--paper-line);
+  }
+  .inline-photo{margin:0 0 18px;}
+  .inline-photo img{
+    width:100%; height:200px; object-fit:cover; border-radius:var(--radius-page);
+    border:1px solid var(--paper-line); display:block;
+  }
+
+  /* about grid */
+  .about-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:start; margin-bottom:52px;}
+  .about-grid p{color:var(--ink-soft); margin-bottom:14px;}
+  .roles{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px;}
+  .roles li{
+    display:flex; gap:14px; padding:14px 0; border-top:1px solid var(--paper-line);
+  }
+  .roles li:first-child{border-top:none;}
+  .role-mark{
+    width:28px; height:28px; flex:none; border-radius:50%;
+    background:var(--cream-2); border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:.8rem; color:var(--wine); font-weight:600;
+  }
+  .role-body strong{display:block; font-size:.94rem; margin-bottom:2px;}
+  .role-body span{font-size:.86rem; color:var(--ink-soft);}
+
+  .founders-card{
+    background:linear-gradient(180deg,#F7F1E1,#EFE4CB);
+    border:1px solid var(--paper-line); border-radius:var(--radius-page);
+    padding:26px;
+  }
+  .founders-card h3{font-size:1.1rem; margin-bottom:10px;}
+  .founders-card p{color:var(--ink-soft); font-size:.9rem;}
+  .stamp{
+    margin-top:18px; display:inline-flex; align-items:center; gap:8px;
+    border:1px dashed var(--wine); color:var(--wine); border-radius:30px;
+    padding:6px 14px; font-size:.76rem; font-weight:600;
+  }
+
+  /* how it works timeline */
+  .how-steps{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-bottom:56px;
+    border-top:1px solid var(--paper-line);
+  }
+  .how-step{padding:22px 20px 0; border-right:1px solid var(--paper-line); position:relative;}
+  .how-step:last-child{border-right:none;}
+  .how-step .idx{font-family:'Fraunces',serif; font-style:italic; color:var(--gold); font-size:1.3rem; margin-bottom:8px; display:block;}
+  .how-step h3{font-size:1rem; margin-bottom:8px;}
+  .how-step p{font-size:.86rem; color:var(--ink-soft);}
+
+  /* ---------- Bookshelf ---------- */
+  .shelf-wrap{margin-bottom:56px;}
+  .shelf{
+    display:flex; align-items:flex-end; gap:6px; padding:0 10px 14px;
+    border-bottom:10px solid var(--wine-dark);
+    border-radius:2px 2px 0 0;
+    overflow-x:auto;
+    min-height:210px;
+  }
+  .book-spine{
+    flex:none; width:44px; height:180px; border-radius:3px 3px 0 0;
+    display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px;
+    color:#fff; font-family:'Inter',sans-serif; font-weight:600; font-size:.68rem;
+    writing-mode:vertical-rl; text-orientation:mixed;
+    box-shadow: inset 3px 0 0 rgba(255,255,255,0.18), inset -3px 0 0 rgba(0,0,0,0.18);
+    cursor:default; transition:transform .15s ease;
+  }
+  .book-spine:hover{transform:translateY(-6px);}
+  .book-spine.current{height:210px; outline:2px solid var(--gold); outline-offset:2px;}
+
+  .shelf-caption{
+    display:flex; justify-content:space-between; align-items:center; margin-top:14px; flex-wrap:wrap; gap:10px;
+  }
+  .shelf-caption p{font-size:.84rem; color:var(--ink-soft); margin:0;}
+  .legend{display:flex; gap:16px; font-size:.78rem; color:var(--ink-soft);}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .dot{width:10px; height:10px; border-radius:2px; display:inline-block;}
+
+  /* ---------- Sessions ---------- */
+  .sessions-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; margin-bottom:30px;}
+  .session-card{
+    background:#FBF8F0; border:1px solid var(--paper-line); border-radius:var(--radius-page);
+    padding:0; overflow:hidden; position:relative;
+  }
+  .session-card .ribbon{
+    position:absolute; top:0; right:18px; width:26px; height:44px;
+    background:var(--gold);
+    clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);
+  }
+  .session-date{
+    background:var(--forest); color:#EFE9D8; padding:14px 18px;
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .session-date .d{font-family:'Fraunces',serif; font-size:1.5rem; font-weight:600;}
+  .session-date .m{font-size:.72rem; letter-spacing:.4px; color:#CBD6C8;}
+  .session-body{padding:18px;}
+  .session-body h3{font-size:1.05rem; margin-bottom:4px;}
+  .session-body .autor{font-size:.82rem; color:var(--wine); margin-bottom:10px; font-weight:600;}
+  .session-body p{font-size:.86rem; color:var(--ink-soft); margin-bottom:12px;}
+  .session-meta{display:flex; gap:14px; font-size:.78rem; color:var(--ink-soft); flex-wrap:wrap;}
+
+  .add-session{
+    border:1px dashed var(--paper-line); border-radius:var(--radius-page);
+    padding:20px; margin-top:10px;
+  }
+  .add-session summary{cursor:pointer; font-weight:600; font-size:.9rem; color:var(--wine); list-style:none;}
+  .add-session summary::-webkit-details-marker{display:none;}
+  .add-session summary::before{content:"＋ "; }
+  .add-session[open] summary::before{content:"－ "; }
+
+  /* ---------- Préstamos ---------- */
+  .lend-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px;}
+  .lend-card{
+    background:#FBF8F0; border:1px solid var(--paper-line); border-radius:var(--radius-page);
+    padding:18px; display:flex; flex-direction:column; gap:10px;
+    border-left:5px solid var(--gold);
+  }
+  .lend-card.prestado{border-left-color:var(--wine);}
+  .lend-card h3{font-size:1rem;}
+  .lend-card .autor{font-size:.82rem; color:var(--ink-soft);}
+  .lend-card .dueno{font-size:.78rem; color:var(--wine); font-weight:600;}
+  .lend-status{
+    display:inline-flex; align-self:flex-start; align-items:center; gap:6px;
+    padding:4px 10px; border-radius:20px; font-size:.72rem; font-weight:600;
+  }
+  .lend-status.disponible{background:#E5EEE1; color:var(--forest-dark);}
+  .lend-status.prestado{background:#F3E4E4; color:#7C2A2A;}
+  .lend-request{display:flex; gap:8px; margin-top:4px;}
+  .lend-request input{
+    flex:1; font-family:'Inter',sans-serif; font-size:.82rem; padding:8px 10px;
+    border:1px solid var(--paper-line); border-radius:4px;
+  }
+  .lend-request button, .lend-return button{
+    font-family:'Inter',sans-serif; font-weight:600; font-size:.78rem; padding:8px 12px;
+    border-radius:4px; border:1px solid var(--forest); background:var(--forest); color:#fff; cursor:pointer;
+  }
+  .lend-return{font-size:.82rem; color:var(--ink-soft); display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;}
+  .lend-return button{background:var(--wine); border-color:var(--wine);}
+
+  /* ---------- Dinámicas ---------- */
+  .dyn-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px;}
+  .dyn-card{
+    background:#FBF8F0; border:1px solid var(--paper-line); border-radius:var(--radius-page);
+    padding:20px;
+  }
+  .dyn-card h3{font-size:.98rem; margin-bottom:8px; color:var(--wine);}
+  .dyn-card p{font-size:.85rem; color:var(--ink-soft); margin:0;}
+
+  /* ---------- Forms ---------- */
+  form{margin-top:16px;}
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .field{display:flex; flex-direction:column; gap:6px; margin-bottom:16px;}
+  .field.full{grid-column:1/-1;}
+  .field label{font-size:.8rem; font-weight:600; color:var(--ink-soft);}
+  .field input, .field select, .field textarea{
+    font-family:'Inter',sans-serif; font-size:.92rem;
+    padding:10px 12px; border:1px solid var(--paper-line); border-radius:4px;
+    background:#fff; color:var(--ink);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--gold); outline-offset:1px; border-color:var(--gold);
+  }
+  .field textarea{resize:vertical; min-height:70px;}
+  .hint{font-size:.76rem; color:var(--ink-soft); margin-top:-4px;}
+  .form-msg{
+    display:none; margin-top:14px; padding:12px 16px; border-radius:4px;
+    background:#E5EEE1; border:1px solid var(--forest); color:var(--forest-dark);
+    font-size:.86rem; font-weight:500;
+  }
+  .form-msg.show{display:block;}
+
+  .register-wrap{display:grid; grid-template-columns:1.2fr .8fr; gap:36px; align-items:start;}
+  .register-side{
+    background:var(--forest); color:#EFE9D8; border-radius:var(--radius-page);
+    padding:26px;
+  }
+  .register-side h3{color:#fff; font-size:1.1rem; margin-bottom:12px;}
+  .register-side ul{margin:0; padding-left:18px; font-size:.86rem; color:#D7DED2;}
+  .register-side li{margin-bottom:8px;}
+
+  /* ---------- Members table ---------- */
+  .members-toolbar{display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:18px;}
+  .members-toolbar input{
+    padding:9px 14px; border:1px solid var(--paper-line); border-radius:4px; font-family:'Inter',sans-serif; font-size:.86rem; min-width:220px;
+  }
+  .count-pill{
+    background:var(--cream-2); border:1px solid var(--paper-line); border-radius:20px;
+    padding:6px 14px; font-size:.78rem; font-weight:600; color:var(--wine);
+  }
+  table{width:100%; border-collapse:collapse; font-size:.86rem;}
+  thead th{
+    text-align:left; font-weight:600; color:var(--ink-soft); font-size:.75rem;
+    letter-spacing:.2px; padding:10px 12px; border-bottom:2px solid var(--ink);
+  }
+  tbody td{padding:12px; border-bottom:1px solid var(--paper-line); color:var(--ink);}
+  tbody tr:hover{background:rgba(180,134,60,0.07);}
+  .badge{
+    display:inline-block; padding:3px 10px; border-radius:20px; font-size:.72rem; font-weight:600;
+  }
+  .badge.si{background:#E5EEE1; color:var(--forest-dark);}
+  .badge.no{background:#F3E4E4; color:#7C2A2A;}
+  .attend-btn{
+    border:1px solid var(--paper-line); background:#fff; border-radius:4px; padding:5px 10px;
+    font-size:.72rem; cursor:pointer; font-family:'Inter',sans-serif; font-weight:600; color:var(--ink-soft);
+  }
+  .attend-btn:hover{border-color:var(--forest); color:var(--forest);}
+  .empty-row td{text-align:center; color:var(--ink-soft); padding:30px 12px; font-style:italic;}
+  .remove-btn{background:none; border:none; color:var(--wine); cursor:pointer; font-size:.78rem; font-weight:600;}
+  .remove-btn:hover{text-decoration:underline;}
+  .table-scroll{overflow-x:auto; border:1px solid var(--paper-line); border-radius:var(--radius-page);}
+
+  .inscritas-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column;}
+  .inscrita-item{
+    display:flex; justify-content:space-between; align-items:center; gap:14px;
+    padding:13px 4px; border-bottom:1px solid var(--paper-line); flex-wrap:wrap;
+  }
+  .inscrita-item:last-child{border-bottom:none;}
+  .inscrita-nombre{font-weight:600; font-size:.92rem;}
+  .inscrita-meta{font-size:.78rem; color:var(--ink-soft);}
+  .inscrita-empty{padding:10px 4px; color:var(--ink-soft); font-style:italic; font-size:.88rem;}
+
+  footer{
+    border-top:1px solid var(--paper-line); padding:26px 0; margin-top:40px;
+  }
+  footer .container{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:.78rem; color:var(--ink-soft);}
+
+  /* ---------- Acceso administrador ---------- */
+  .admin-zone{display:flex; align-items:center; gap:10px;}
+  .admin-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--cream-2); border:1px solid var(--paper-line); border-radius:20px;
+    padding:6px 12px; font-size:.78rem; font-weight:600; color:var(--forest-dark);
+  }
+  [data-admin-only]{display:none;}
+  body.is-admin [data-admin-only]{display:revert;}
+
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(36,31,24,0.55); z-index:100;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-backdrop[hidden]{display:none;}
+  .modal-card{
+    background:var(--cream); border:1px solid var(--paper-line); border-radius:6px;
+    box-shadow:var(--shadow-book); padding:32px; width:100%; max-width:380px; position:relative;
+  }
+  .modal-card h3{font-size:1.3rem; margin:6px 0 4px;}
+  .modal-close{
+    position:absolute; top:14px; right:14px; background:none; border:none; cursor:pointer;
+    font-size:1rem; color:var(--ink-soft);
+  }
+  .link-btn{
+    background:none; border:none; color:var(--wine); font-weight:600; font-size:.82rem;
+    cursor:pointer; margin-top:14px; padding:0; font-family:'Inter',sans-serif;
+  }
+  .link-btn:hover{text-decoration:underline;}
+  .form-msg.error{background:#F3E4E4; border-color:#7C2A2A; color:#7C2A2A;}
+
+  @media (max-width:760px){
+    .hero{grid-template-columns:1fr;}
+    .hero-page.left{border-right:none; border-bottom:1px solid var(--paper-line);}
+    .photo-strip{grid-template-columns:1fr;}
+    .about-grid, .register-wrap{grid-template-columns:1fr;}
+    .how-steps{grid-template-columns:1fr 1fr;}
+    .how-step{border-right:none; border-bottom:1px solid var(--paper-line); padding-bottom:18px;}
+    .form-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="nav-wrap">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-text">La Hoja de Ruta<small>Club de lectura · Facultad de Administración</small></div>
+    </div>
+    <div class="admin-zone">
+      <span class="admin-pill" id="admin-pill" hidden>👤 <span id="admin-pill-name">admin</span></span>
+      <button class="btn btn-outline btn-sm" id="btn-admin-login" type="button">Acceso administrador</button>
+      <button class="btn btn-outline btn-sm" id="btn-admin-logout" type="button" hidden>Cerrar sesión</button>
+    </div>
+  </div>
+  <div class="nav-wrap" style="padding-top:0;">
+    <nav class="tabs" id="tabs">
+      <button data-view="inicio" class="active">Inicio</button>
+      <button data-view="club">El club</button>
+      <button data-view="sesiones">Sesiones</button>
+      <button data-view="prestamos" data-admin-only>Préstamos</button>
+      <button data-view="inscripcion">Inscripción</button>
+      <button data-view="integrantes" data-admin-only>Integrantes</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ MODAL DE ACCESO ADMINISTRADOR ============ -->
+<div class="modal-backdrop" id="admin-modal" hidden>
+  <div class="modal-card">
+    <button class="modal-close" id="modal-close" type="button" aria-label="Cerrar">✕</button>
+
+    <div id="panel-login">
+      <div class="eyebrow">Solo coordinación</div>
+      <h3>Acceso de administrador</h3>
+      <p class="hint" style="margin-bottom:16px;">Inicia sesión para gestionar sesiones, préstamos e integrantes.</p>
+      <form id="form-login">
+        <div class="field">
+          <label for="log-user">Usuario</label>
+          <input type="text" id="log-user" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="log-pass">Contraseña</label>
+          <input type="password" id="log-pass" autocomplete="current-password" required>
+        </div>
+        <div class="form-msg error" id="login-error">Usuario o contraseña incorrectos.</div>
+        <button type="submit" class="btn btn-wine" style="margin-top:6px;">Iniciar sesión</button>
+      </form>
+      <button type="button" class="link-btn" id="go-recover">¿Olvidaste tu contraseña?</button>
+      <button type="button" class="link-btn" id="go-create">Crear cuenta de administrador</button>
+    </div>
+
+    <div id="panel-create" hidden>
+      <div class="eyebrow">Primer acceso</div>
+      <h3>Crear cuenta de administrador</h3>
+      <p class="hint" style="margin-bottom:16px;">Define tus propios datos de acceso. Esto reemplaza cualquier usuario y contraseña anteriores guardados en este navegador.</p>
+      <form id="form-create">
+        <div class="field">
+          <label for="cr-user">Usuario</label>
+          <input type="text" id="cr-user" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="cr-pass">Contraseña</label>
+          <input type="password" id="cr-pass" autocomplete="new-password" minlength="4" required>
+        </div>
+        <div class="field">
+          <label for="cr-pass2">Confirmar contraseña</label>
+          <input type="password" id="cr-pass2" autocomplete="new-password" minlength="4" required>
+        </div>
+        <div class="field">
+          <label for="cr-question">Pregunta de seguridad</label>
+          <input type="text" id="cr-question" placeholder="Para recuperar la contraseña después" required>
+        </div>
+        <div class="field">
+          <label for="cr-answer">Respuesta</label>
+          <input type="text" id="cr-answer" required>
+        </div>
+        <div class="form-msg error" id="create-error">Las contraseñas no coinciden.</div>
+        <button type="submit" class="btn btn-wine" style="margin-top:6px;">Crear cuenta y entrar</button>
+      </form>
+      <button type="button" class="link-btn" id="go-login-2">Ya tengo cuenta, iniciar sesión</button>
+    </div>
+
+    <div id="panel-recover" hidden>
+      <div class="eyebrow">Recuperar acceso</div>
+      <h3>Responde tu pregunta de seguridad</h3>
+      <p class="hint" style="margin-bottom:16px;" id="recover-question">Pregunta de seguridad</p>
+      <form id="form-recover">
+        <div class="field">
+          <label for="rec-answer">Tu respuesta</label>
+          <input type="text" id="rec-answer" required>
+        </div>
+        <div class="field">
+          <label for="rec-new-pass">Nueva contraseña</label>
+          <input type="password" id="rec-new-pass" minlength="4" required>
+        </div>
+        <div class="form-msg error" id="recover-error">Esa respuesta no coincide. Intenta de nuevo.</div>
+        <div class="form-msg show" id="recover-ok" style="display:none;">Contraseña actualizada. Ya puedes iniciar sesión.</div>
+        <button type="submit" class="btn btn-wine" style="margin-top:6px;">Restablecer contraseña</button>
+      </form>
+      <button type="button" class="link-btn" id="go-login">Volver a iniciar sesión</button>
+    </div>
+
+    <div id="panel-settings" hidden>
+      <div class="eyebrow">Sesión de administrador</div>
+      <h3>Datos de acceso</h3>
+      <p class="hint" style="margin-bottom:16px;">Cambia tu contraseña o tu pregunta de seguridad para la recuperación.</p>
+      <form id="form-settings">
+        <div class="field">
+          <label for="set-pass">Nueva contraseña (opcional)</label>
+          <input type="password" id="set-pass" minlength="4" placeholder="Dejar en blanco para no cambiar">
+        </div>
+        <div class="field">
+          <label for="set-question">Pregunta de seguridad</label>
+          <input type="text" id="set-question" placeholder="Ej. ¿Nombre de tu primera moderadora?">
+        </div>
+        <div class="field">
+          <label for="set-answer">Respuesta</label>
+          <input type="text" id="set-answer" placeholder="Dejar en blanco para no cambiar">
+        </div>
+        <div class="form-msg show" id="settings-ok" style="display:none;">Datos actualizados correctamente.</div>
+        <button type="submit" class="btn btn-forest" style="margin-top:6px;">Guardar cambios</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- ============ INICIO ============ -->
+  <section class="view active" id="view-inicio">
+    <div class="hero">
+      <div class="hero-page left">
+        <div class="eyebrow">Proyecto estudiantil · Lic. en Administración</div>
+        <h1 class="hero-title">Leer también<br><em>se administra.</em></h1>
+        <p class="hero-sub">Un espacio para volver al hábito de la lectura, sesión a sesión, libro a libro — organizado por alumnas de Administración que decidieron aplicar la planeación también a sus tardes libres.</p>
+        <div class="hero-actions">
+          <button class="btn btn-wine" onclick="goTo('inscripcion')">Inscribirme al club</button>
+          <button class="btn btn-outline" onclick="goTo('sesiones')">Ver próxima sesión</button>
+        </div>
+      </div>
+      <div class="hero-page right">
+        <div class="hero-stat-row">
+          <div class="hero-stat"><div class="num" id="stat-integrantes">0</div><div class="lab">integrantes inscritas</div></div>
+          <div class="hero-stat"><div class="num" id="stat-libros">4</div><div class="lab">libros en la estantería</div></div>
+          <div class="hero-stat"><div class="num" id="stat-sesiones">3</div><div class="lab">sesiones programadas</div></div>
+        </div>
+        <p class="hero-quote">"Un buen lector, como un buen gerente, sabe que el avance se mide en páginas, no en prisas."</p>
+      </div>
+    </div>
+
+    <div class="photo-strip">
+      <figure>
+        <img src="https://images.unsplash.com/photo-1717768023712-4c04048e82cc?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Taza de café sobre un libro abierto">
+        <figcaption>Cada sesión empieza con café</figcaption>
+      </figure>
+      <figure>
+        <img src="https://images.unsplash.com/photo-1523865236457-3ae3358a4eaa?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Taza de vidrio sobre libros apilados">
+        <figcaption>Lectura a ritmo propio</figcaption>
+      </figure>
+      <figure>
+        <img src="https://images.unsplash.com/photo-1763497397285-a557a7c8d8b7?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Libro y café sobre mesa de mármol">
+        <figcaption>Conversación, libro en mano</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ EL CLUB ============ -->
+  <section class="view" id="view-club">
+    <div class="section-head">
+      <div class="eyebrow">¿En qué consiste?</div>
+      <h2>Un club de lectura con estructura de proyecto</h2>
+      <p>Nació dentro de la carrera de Administración como una forma de darle seguimiento real al hábito de leer: con metas, fechas y responsables, igual que cualquier plan de trabajo — pero con novelas, ensayos y libros de negocio de por medio.</p>
+    </div>
+
+    <div class="about-grid">
+      <div>
+        <p>El club se reúne de manera periódica para comentar un libro elegido entre todas las integrantes. Cada ciclo dura entre tres y cuatro semanas: tiempo suficiente para leer con calma y llegar con algo que decir.</p>
+        <p>No es un grupo exclusivo para quienes ya tienen el hábito formado. La idea original de sus fundadoras fue justo lo contrario: crear un compromiso compartido para quienes quieren leer más y no encuentran el momento de empezar.</p>
+        <p>Cada sesión se documenta: quién asistió, qué se leyó y qué quedó pendiente para la siguiente ronda. Esa bitácora es la que se administra en este sistema.</p>
+      </div>
+      <div>
+        <figure class="inline-photo">
+          <img src="https://images.unsplash.com/photo-1763497397285-a557a7c8d8b7?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Libro abierto junto a una taza de café sobre una mesa">
+        </figure>
+        <div class="founders-card">
+          <h3>¿Quién lo organiza?</h3>
+          <p>Un grupo de alumnas de la Licenciatura en Administración, como proyecto para fomentar la lectura dentro de la comunidad estudiantil y practicar, de paso, organización de eventos y trabajo en equipo.</p>
+          <div class="stamp">Proyecto universitario 2026</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <div class="eyebrow">Roles dentro del club</div>
+      <h2>Cómo se reparte el trabajo</h2>
+    </div>
+    <ul class="roles" style="margin-bottom:56px;">
+      <li>
+        <div class="role-mark">A</div>
+        <div class="role-body"><strong>Coordinación general</strong><span>Define el calendario, confirma sede y da seguimiento a inscripciones.</span></div>
+      </li>
+      <li>
+        <div class="role-mark">M</div>
+        <div class="role-body"><strong>Moderación de sesión</strong><span>Prepara preguntas guía y dirige la conversación el día del encuentro.</span></div>
+      </li>
+      <li>
+        <div class="role-mark">B</div>
+        <div class="role-body"><strong>Selección de libro</strong><span>Propone opciones para el siguiente ciclo y organiza la votación.</span></div>
+      </li>
+      <li>
+        <div class="role-mark">R</div>
+        <div class="role-body"><strong>Registro y bitácora</strong><span>Lleva el control de asistencia y actualiza este sistema tras cada sesión.</span></div>
+      </li>
+    </ul>
+
+    <div class="section-head">
+      <div class="eyebrow">Cómo funciona un ciclo</div>
+      <h2>De la propuesta a la sesión</h2>
+    </div>
+    <div class="how-steps">
+      <div class="how-step">
+        <span class="idx">i</span>
+        <h3>Se elige el libro</h3>
+        <p>Se proponen dos o tres títulos y el grupo vota cuál se leerá en las próximas semanas.</p>
+      </div>
+      <div class="how-step">
+        <span class="idx">ii</span>
+        <h3>Lectura individual</h3>
+        <p>Cada integrante avanza a su ritmo durante el periodo acordado, con metas de páginas sugeridas.</p>
+      </div>
+      <div class="how-step">
+        <span class="idx">iii</span>
+        <h3>Sesión de discusión</h3>
+        <p>Nos reunimos para comentar impresiones, dudas y fragmentos favoritos, con una moderadora guiando.</p>
+      </div>
+      <div class="how-step">
+        <span class="idx">iv</span>
+        <h3>Cierre y bitácora</h3>
+        <p>Se registra la asistencia, se documentan las conclusiones y se abre la votación del siguiente libro.</p>
+      </div>
+    </div>
+
+    <div class="shelf-wrap">
+      <div class="section-head" style="margin-bottom:20px;">
+        <div class="eyebrow">Nuestra estantería</div>
+        <h2>Lo que hemos leído</h2>
+      </div>
+      <div class="shelf" id="shelf"></div>
+      <div class="shelf-caption">
+        <p>Pasa el cursor sobre un lomo para ver el título.</p>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--gold);"></i>En curso</span>
+          <span><i class="dot" style="background:var(--forest);"></i>Leído</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SESIONES ============ -->
+  <section class="view" id="view-sesiones">
+    <div class="section-head">
+      <div class="eyebrow">Calendario</div>
+      <h2>Próximas sesiones</h2>
+      <p>Fecha, libro y tema de cada encuentro. La coordinación puede agregar una nueva sesión al final de este apartado.</p>
+    </div>
+
+    <div class="sessions-grid" id="sessions-grid"></div>
+
+    <details class="add-session" data-admin-only>
+      <summary>Agregar nueva sesión</summary>
+      <form id="form-sesion">
+        <div class="form-grid">
+          <div class="field">
+            <label for="s-fecha">Fecha</label>
+            <input type="date" id="s-fecha" required>
+          </div>
+          <div class="field">
+            <label for="s-hora">Hora</label>
+            <input type="time" id="s-hora" value="17:00" required>
+          </div>
+          <div class="field">
+            <label for="s-libro">Libro</label>
+            <input type="text" id="s-libro" placeholder="Título del libro" required>
+          </div>
+          <div class="field">
+            <label for="s-autor">Autor</label>
+            <input type="text" id="s-autor" placeholder="Nombre del autor" required>
+          </div>
+          <div class="field">
+            <label for="s-lugar">Sede</label>
+            <input type="text" id="s-lugar" placeholder="Ej. Sala de lectura, edificio B" required>
+          </div>
+          <div class="field">
+            <label for="s-tema">Tema a discutir</label>
+            <input type="text" id="s-tema" placeholder="Ej. Capítulos 1 al 6">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-forest btn-sm">Agregar sesión</button>
+      </form>
+    </details>
+  </section>
+
+  <!-- ============ PRÉSTAMOS ============ -->
+  <section class="view" id="view-prestamos">
+    <div class="section-head">
+      <div class="eyebrow">Librero viajero</div>
+      <h2>Préstamo de libros entre integrantes</h2>
+      <p>¿Tienes un libro que ya leíste y quieres que circule? Ofrécelo aquí. Cualquier integrante puede solicitarlo y devolverlo cuando lo termine.</p>
+    </div>
+
+    <div class="photo-strip" style="margin-bottom:44px;">
+      <figure style="grid-column:span 2;">
+        <img src="https://images.unsplash.com/photo-1499447155021-4907f71b9ef5?fm=jpg&q=70&w=1000&auto=format&fit=crop" alt="Estantería de biblioteca con libros apilados">
+        <figcaption>Entre más circulan los libros, más alcanzan.</figcaption>
+      </figure>
+      <figure>
+        <img src="https://images.unsplash.com/photo-1523865236457-3ae3358a4eaa?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Libros apilados junto a una taza de café">
+        <figcaption>Préstamo informal, devolución con confianza.</figcaption>
+      </figure>
+    </div>
+
+    <div class="lend-grid" id="lend-grid"></div>
+
+    <details class="add-session" style="margin-top:8px;">
+      <summary>Ofrecer un libro en préstamo</summary>
+      <form id="form-prestamo">
+        <div class="form-grid">
+          <div class="field">
+            <label for="p-titulo">Título del libro</label>
+            <input type="text" id="p-titulo" placeholder="Título" required>
+          </div>
+          <div class="field">
+            <label for="p-autor">Autor</label>
+            <input type="text" id="p-autor" placeholder="Autor" required>
+          </div>
+          <div class="field full">
+            <label for="p-dueno">¿Quién lo presta?</label>
+            <input type="text" id="p-dueno" placeholder="Tu nombre" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-forest btn-sm">Agregar a la lista</button>
+      </form>
+    </details>
+
+    <div class="section-head" style="margin-top:60px;">
+      <div class="eyebrow">Para animar la sesión</div>
+      <h2>Dinámicas del club</h2>
+      <p>Actividades cortas que las moderadoras pueden usar para romper el hielo o cerrar una sesión de discusión.</p>
+    </div>
+    <div class="dyn-grid">
+      <div class="dyn-card">
+        <h3>Intercambio relámpago</h3>
+        <p>Cada quien trae un libro que ya no vaya a releer. En cinco minutos, todas lo intercambian entre sí y se quedan con el que les tocó al final.</p>
+      </div>
+      <div class="dyn-card">
+        <h3>Cadena de citas favoritas</h3>
+        <p>Por turnos, cada integrante lee en voz alta una frase del libro del mes que le haya marcado, sin explicarla todavía. El grupo comenta después.</p>
+      </div>
+      <div class="dyn-card">
+        <h3>Club a ciegas</h3>
+        <p>Alguien envuelve un libro con tres pistas escritas afuera. El resto adivina de qué trata antes de descubrirlo y pasa a la lista de préstamos.</p>
+      </div>
+      <div class="dyn-card">
+        <h3>Recomendación exprés</h3>
+        <p>Dos minutos por persona para presentar un libro fuera de la lista del club que recomendarían para el próximo ciclo, con una sola razón.</p>
+      </div>
+      <div class="dyn-card">
+        <h3>Bingo literario</h3>
+        <p>Antes de la sesión se reparte una tarjeta con casillas como "un libro con mapa" o "un final que no esperabas"; se marcan según lo leído en el mes.</p>
+      </div>
+      <div class="dyn-card">
+        <h3>Final alternativo</h3>
+        <p>En grupos pequeños, se propone un final distinto para el libro del mes y se comparte cuál habría cambiado más la historia.</p>
+      </div>
+    </div>
+  </section>
+  <section class="view" id="view-inscripcion">
+    <div class="section-head">
+      <div class="eyebrow">Únete</div>
+      <h2>Inscríbete al club</h2>
+      <p>Completa tus datos para reservar tu lugar en la próxima sesión. No necesitas haber leído antes con regularidad, solo tener ganas de intentarlo.</p>
+    </div>
+
+    <div class="register-wrap">
+      <div class="card">
+        <form id="form-inscripcion">
+          <div class="form-grid">
+            <div class="field">
+              <label for="i-nombre">Nombre completo</label>
+              <input type="text" id="i-nombre" placeholder="Nombre y apellidos" required>
+            </div>
+            <div class="field">
+              <label for="i-matricula">Número de matrícula</label>
+              <input type="text" id="i-matricula" placeholder="Ej. A01234567" required>
+            </div>
+            <div class="field">
+              <label for="i-semestre">Semestre</label>
+              <select id="i-semestre" required>
+                <option value="">Selecciona</option>
+                <option>1°</option><option>2°</option><option>3°</option><option>4°</option>
+                <option>5°</option><option>6°</option><option>7°</option><option>8°</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="i-sesion">Sesión a la que asistirá</label>
+              <select id="i-sesion" required></select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-wine">Confirmar inscripción</button>
+          <div class="form-msg" id="msg-inscripcion">Tu inscripción quedó registrada. Nos vemos en la sesión elegida.</div>
+        </form>
+      </div>
+
+      <div class="register-side">
+        <h3>Antes de inscribirte</h3>
+        <ul>
+          <li>Las sesiones duran aproximadamente una hora.</li>
+          <li>No es obligatorio terminar el libro para asistir.</li>
+          <li>Puedes cambiar de sesión escribiendo a la coordinación.</li>
+          <li>Tu registro se agrega directamente a la lista de integrantes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:48px; margin-bottom:18px;">
+      <div class="eyebrow">Ya confirmadas</div>
+      <h2 style="font-size:1.3rem;">Personas inscritas</h2>
+    </div>
+    <div class="card">
+      <ul class="inscritas-list" id="inscritas-list"></ul>
+    </div>
+  </section>
+
+  <!-- ============ INTEGRANTES ============ -->
+  <section class="view" id="view-integrantes">
+    <div class="section-head">
+      <div class="eyebrow">Bitácora</div>
+      <h2>Integrantes registradas</h2>
+      <p>Lista de quienes se han inscrito al club. Marca la asistencia conforme se confirme cada sesión.</p>
+    </div>
+
+    <div class="members-toolbar">
+      <input type="text" id="buscar" placeholder="Buscar por nombre o matrícula…">
+      <span class="count-pill" id="count-pill">0 integrantes</span>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre completo</th>
+            <th>Matrícula</th>
+            <th>Semestre</th>
+            <th>Sesión</th>
+            <th>Asistencia</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="members-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <span>La Hoja de Ruta — Club de Lectura, proyecto de la Facultad de Administración.</span>
+    <span>Sistema de registro para uso interno del club.</span>
+  </div>
+</footer>
+
+<script>
+  // ---------- estado en memoria ----------
+  let sesiones = [
+    {fecha:"2026-10-08", hora:"17:00", libro:"Los siete hábitos de la gente altamente efectiva", autor:"Stephen R. Covey", lugar:"Sala de lectura, edificio B", tema:"Capítulos 1 a 3: hábitos 1 y 2"},
+    {fecha:"2026-10-29", hora:"17:00", libro:"Cien años de soledad", autor:"Gabriel García Márquez", lugar:"Jardín central, mesas de lectura", tema:"Primera mitad de la novela"},
+    {fecha:"2026-11-19", hora:"18:00", libro:"Sapiens: de animales a dioses", autor:"Yuval Noah Harari", lugar:"Sala de lectura, edificio B", tema:"Parte I: la revolución cognitiva"},
+  ];
+
+  let libros = [
+    {titulo:"El monje que vendió su Ferrari", estado:"leido", color:"#33473A"},
+    {titulo:"Padre rico, padre pobre", estado:"leido", color:"#7C2A3B"},
+    {titulo:"Hábitos atómicos", estado:"leido", color:"#B4863C"},
+    {titulo:"Los 7 hábitos", estado:"actual", color:"#5E1F2C"},
+  ];
+
+  let integrantes = [];
+  let idCounter = 1;
+
+  let prestamos = [
+    {id:1, titulo:"Hábitos atómicos", autor:"James Clear", dueno:"Regina Ortiz", estado:"disponible", prestadoA:""},
+    {id:2, titulo:"El principito", autor:"Antoine de Saint-Exupéry", dueno:"Camila Reyes", estado:"prestado", prestadoA:"Ana Paula Soto"},
+    {id:3, titulo:"Mujeres que corren con los lobos", autor:"Clarissa Pinkola Estés", dueno:"Fernanda López", estado:"disponible", prestadoA:""},
+  ];
+  let prestamoIdCounter = 4;
+
+  // ---------- navegación por pestañas ----------
+  const tabButtons = document.querySelectorAll('#tabs button');
+  tabButtons.forEach(btn=>{
+    btn.addEventListener('click', ()=> goTo(btn.dataset.view));
+  });
+  const ADMIN_ONLY_VIEWS = ['prestamos','integrantes'];
+  function goTo(view){
+    if(ADMIN_ONLY_VIEWS.includes(view) && !isAdmin()) view = 'inicio';
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+view).classList.add('active');
+    tabButtons.forEach(b=>b.classList.toggle('active', b.dataset.view===view));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // ---------- acceso de administrador ----------
+  const ADMIN_DEFAULTS = {
+    user: 'admin',
+    pass: 'club2026',
+    question: '¿Cómo se llama el club?',
+    answer: 'la hoja de ruta',
+  };
+  function loadAdminConfig(){
+    try{
+      const raw = localStorage.getItem('clubAdminConfig');
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    return {...ADMIN_DEFAULTS};
+  }
+  function saveAdminConfig(cfg){
+    try{ localStorage.setItem('clubAdminConfig', JSON.stringify(cfg)); }catch(e){}
+  }
+  let adminConfig = loadAdminConfig();
+  let adminLoggedIn = false;
+  try{ adminLoggedIn = sessionStorage.getItem('clubAdminSession') === '1'; }catch(e){}
+
+  function isAdmin(){ return adminLoggedIn; }
+
+  function applyAdminState(){
+    document.body.classList.toggle('is-admin', adminLoggedIn);
+    document.getElementById('btn-admin-login').hidden = adminLoggedIn;
+    document.getElementById('btn-admin-logout').hidden = !adminLoggedIn;
+    const pill = document.getElementById('admin-pill');
+    pill.hidden = !adminLoggedIn;
+    if(adminLoggedIn){
+      document.getElementById('admin-pill-name').textContent = adminConfig.user;
+    }
+  }
+
+  const modal = document.getElementById('admin-modal');
+  function openModal(panel){
+    modal.hidden = false;
+    showPanel(panel || 'login');
+  }
+  function closeModal(){
+    modal.hidden = true;
+    document.getElementById('form-login').reset();
+    document.getElementById('form-recover').reset();
+    document.getElementById('form-create').reset();
+    document.getElementById('login-error').classList.remove('show');
+    document.getElementById('recover-error').classList.remove('show');
+    document.getElementById('create-error').classList.remove('show');
+    document.getElementById('recover-ok').style.display = 'none';
+  }
+  function showPanel(name){
+    document.getElementById('panel-login').hidden = name!=='login';
+    document.getElementById('panel-recover').hidden = name!=='recover';
+    document.getElementById('panel-settings').hidden = name!=='settings';
+    document.getElementById('panel-create').hidden = name!=='create';
+    if(name==='recover'){
+      document.getElementById('recover-question').textContent = adminConfig.question || 'No hay pregunta de seguridad configurada todavía. Contacta a otra coordinadora.';
+    }
+    if(name==='settings'){
+      document.getElementById('set-question').value = adminConfig.question || '';
+    }
+  }
+
+  document.getElementById('btn-admin-login').addEventListener('click', ()=>{
+    let hasSavedAccount = false;
+    try{ hasSavedAccount = !!localStorage.getItem('clubAdminConfig'); }catch(e){}
+    openModal(hasSavedAccount ? 'login' : 'create');
+  });
+  document.getElementById('btn-admin-logout').addEventListener('click', ()=>{
+    adminLoggedIn = false;
+    try{ sessionStorage.removeItem('clubAdminSession'); }catch(e){}
+    applyAdminState();
+    goTo('inicio');
+  });
+  document.getElementById('admin-pill').addEventListener('click', ()=> openModal('settings'));
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
+  document.getElementById('go-recover').addEventListener('click', ()=> showPanel('recover'));
+  document.getElementById('go-login').addEventListener('click', ()=> showPanel('login'));
+  document.getElementById('go-create').addEventListener('click', ()=> showPanel('create'));
+  document.getElementById('go-login-2').addEventListener('click', ()=> showPanel('login'));
+
+  document.getElementById('form-create').addEventListener('submit', e=>{
+    e.preventDefault();
+    const user = document.getElementById('cr-user').value.trim();
+    const pass = document.getElementById('cr-pass').value;
+    const pass2 = document.getElementById('cr-pass2').value;
+    const question = document.getElementById('cr-question').value.trim();
+    const answer = document.getElementById('cr-answer').value.trim();
+    const errorEl = document.getElementById('create-error');
+    if(pass !== pass2){
+      errorEl.textContent = 'Las contraseñas no coinciden.';
+      errorEl.classList.add('show');
+      return;
+    }
+    errorEl.classList.remove('show');
+    adminConfig = { user, pass, question, answer };
+    saveAdminConfig(adminConfig);
+    adminLoggedIn = true;
+    try{ sessionStorage.setItem('clubAdminSession', '1'); }catch(e){}
+    applyAdminState();
+    closeModal();
+    goTo('integrantes');
+  });
+
+  document.getElementById('form-login').addEventListener('submit', e=>{
+    e.preventDefault();
+    const user = document.getElementById('log-user').value.trim();
+    const pass = document.getElementById('log-pass').value;
+    const errorEl = document.getElementById('login-error');
+    if(user.toLowerCase() === adminConfig.user.toLowerCase() && pass === adminConfig.pass){
+      adminLoggedIn = true;
+      try{ sessionStorage.setItem('clubAdminSession', '1'); }catch(e){}
+      applyAdminState();
+      closeModal();
+      goTo('integrantes');
+    } else {
+      errorEl.classList.add('show');
+    }
+  });
+
+  document.getElementById('form-recover').addEventListener('submit', e=>{
+    e.preventDefault();
+    const answer = document.getElementById('rec-answer').value.trim().toLowerCase();
+    const newPass = document.getElementById('rec-new-pass').value;
+    const errorEl = document.getElementById('recover-error');
+    const okEl = document.getElementById('recover-ok');
+    if(!adminConfig.answer || answer !== adminConfig.answer.toLowerCase()){
+      errorEl.classList.add('show');
+      okEl.style.display = 'none';
+      return;
+    }
+    errorEl.classList.remove('show');
+    adminConfig.pass = newPass;
+    saveAdminConfig(adminConfig);
+    okEl.style.display = 'block';
+    e.target.reset();
+    setTimeout(()=> showPanel('login'), 1600);
+  });
+
+  document.getElementById('form-settings').addEventListener('submit', e=>{
+    e.preventDefault();
+    const newPass = document.getElementById('set-pass').value;
+    const newQuestion = document.getElementById('set-question').value.trim();
+    const newAnswer = document.getElementById('set-answer').value.trim();
+    if(newPass) adminConfig.pass = newPass;
+    if(newQuestion) adminConfig.question = newQuestion;
+    if(newAnswer) adminConfig.answer = newAnswer;
+    saveAdminConfig(adminConfig);
+    document.getElementById('settings-ok').style.display = 'block';
+    document.getElementById('set-pass').value = '';
+    document.getElementById('set-answer').value = '';
+    setTimeout(()=>{ document.getElementById('settings-ok').style.display = 'none'; }, 2200);
+  });
+
+  applyAdminState();
+
+  // ---------- estantería ----------
+  function renderShelf(){
+    const shelf = document.getElementById('shelf');
+    shelf.innerHTML = '';
+    libros.forEach(l=>{
+      const div = document.createElement('div');
+      div.className = 'book-spine' + (l.estado==='actual' ? ' current' : '');
+      div.style.background = l.color;
+      div.title = l.titulo;
+      div.textContent = l.titulo;
+      shelf.appendChild(div);
+    });
+    document.getElementById('stat-libros').textContent = libros.length;
+  }
+
+  // ---------- sesiones ----------
+  const meses = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  function fmtFecha(iso){
+    const [y,m,d] = iso.split('-').map(Number);
+    return {dia:d, mes:meses[m-1], anio:y};
+  }
+  function renderSesiones(){
+    const grid = document.getElementById('sessions-grid');
+    grid.innerHTML = '';
+    const selSesion = document.getElementById('i-sesion');
+    selSesion.innerHTML = '<option value="">Selecciona una sesión</option>';
+
+    sesiones
+      .slice()
+      .sort((a,b)=> a.fecha.localeCompare(b.fecha))
+      .forEach((s, i)=>{
+        const f = fmtFecha(s.fecha);
+        const card = document.createElement('div');
+        card.className = 'session-card';
+        card.innerHTML = `
+          <div class="ribbon"></div>
+          <div class="session-date">
+            <div><div class="d">${f.dia}</div><div class="m">${f.mes} ${f.anio}</div></div>
+            <div class="m">${s.hora} h</div>
+          </div>
+          <div class="session-body">
+            <h3>${escapeHtml(s.libro)}</h3>
+            <div class="autor">${escapeHtml(s.autor)}</div>
+            <p>${escapeHtml(s.tema || 'Tema por confirmar.')}</p>
+            <div class="session-meta"><span>📍 ${escapeHtml(s.lugar)}</span></div>
+          </div>`;
+        grid.appendChild(card);
+
+        const opt = document.createElement('option');
+        opt.value = s.fecha + ' — ' + s.libro;
+        opt.textContent = `${f.dia} ${f.mes} · ${s.libro}`;
+        selSesion.appendChild(opt);
+      });
+
+    document.getElementById('stat-sesiones').textContent = sesiones.length;
+  }
+
+  document.getElementById('form-sesion').addEventListener('submit', e=>{
+    e.preventDefault();
+    sesiones.push({
+      fecha: document.getElementById('s-fecha').value,
+      hora: document.getElementById('s-hora').value,
+      libro: document.getElementById('s-libro').value,
+      autor: document.getElementById('s-autor').value,
+      lugar: document.getElementById('s-lugar').value,
+      tema: document.getElementById('s-tema').value,
+    });
+    e.target.reset();
+    document.getElementById('s-hora').value = '17:00';
+    renderSesiones();
+  });
+
+  // ---------- inscripción ----------
+  document.getElementById('form-inscripcion').addEventListener('submit', e=>{
+    e.preventDefault();
+    const integrante = {
+      id: idCounter++,
+      nombre: document.getElementById('i-nombre').value.trim(),
+      matricula: document.getElementById('i-matricula').value.trim(),
+      semestre: document.getElementById('i-semestre').value,
+      sesion: document.getElementById('i-sesion').value,
+      asistira: true,
+    };
+    integrantes.push(integrante);
+    renderIntegrantes();
+
+    e.target.reset();
+    const msg = document.getElementById('msg-inscripcion');
+    msg.classList.add('show');
+    setTimeout(()=> msg.classList.remove('show'), 4000);
+  });
+
+  // ---------- integrantes ----------
+  function renderIntegrantes(filtro=''){
+    const body = document.getElementById('members-body');
+    body.innerHTML = '';
+    const filtradas = integrantes.filter(m =>
+      (m.nombre + ' ' + m.matricula).toLowerCase().includes(filtro.toLowerCase())
+    );
+
+    if(filtradas.length===0){
+      body.innerHTML = `<tr class="empty-row"><td colspan="6">Todavía no hay integrantes registradas. Usa la pestaña “Inscripción” para agregar la primera.</td></tr>`;
+    } else {
+      filtradas.forEach(m=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(m.nombre)}</strong></td>
+          <td>${escapeHtml(m.matricula)}</td>
+          <td>${escapeHtml(m.semestre)}</td>
+          <td>${escapeHtml(m.sesion || '—')}</td>
+          <td>
+            <button class="attend-btn" data-id="${m.id}">
+              <span class="badge ${m.asistira ? 'si' : 'no'}">${m.asistira ? 'Confirmada' : 'Pendiente'}</span>
+            </button>
+          </td>
+          <td><button class="remove-btn" data-remove="${m.id}">Quitar</button></td>
+        `;
+        body.appendChild(tr);
+      });
+    }
+
+    document.getElementById('count-pill').textContent = integrantes.length + (integrantes.length===1 ? ' integrante' : ' integrantes');
+    document.getElementById('stat-integrantes').textContent = integrantes.length;
+
+    body.querySelectorAll('.attend-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = Number(btn.dataset.id);
+        const m = integrantes.find(x=>x.id===id);
+        m.asistira = !m.asistira;
+        renderIntegrantes(document.getElementById('buscar').value);
+      });
+    });
+    body.querySelectorAll('[data-remove]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = Number(btn.dataset.remove);
+        integrantes = integrantes.filter(x=>x.id!==id);
+        renderIntegrantes(document.getElementById('buscar').value);
+      });
+    });
+
+    renderInscritasList();
+  }
+
+  function renderInscritasList(){
+    const list = document.getElementById('inscritas-list');
+    if(!list) return;
+    if(integrantes.length===0){
+      list.innerHTML = `<li class="inscrita-empty">Aún no hay nadie inscrito. ¡Sé la primera!</li>`;
+      return;
+    }
+    list.innerHTML = integrantes.map(m => `
+      <li class="inscrita-item">
+        <span class="inscrita-nombre">${escapeHtml(m.nombre)}</span>
+        <span class="inscrita-meta">Matrícula ${escapeHtml(m.matricula)} · ${escapeHtml(m.semestre)} semestre</span>
+      </li>
+    `).join('');
+  }
+
+  document.getElementById('buscar').addEventListener('input', e=>{
+    renderIntegrantes(e.target.value);
+  });
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ---------- préstamos ----------
+  function renderPrestamos(){
+    const grid = document.getElementById('lend-grid');
+    grid.innerHTML = '';
+    if(prestamos.length===0){
+      grid.innerHTML = `<p class="hint">Nadie ha puesto un libro en préstamo todavía.</p>`;
+      return;
+    }
+    prestamos.forEach(p=>{
+      const card = document.createElement('div');
+      card.className = 'lend-card' + (p.estado==='prestado' ? ' prestado' : '');
+      if(p.estado==='disponible'){
+        card.innerHTML = `
+          <span class="lend-status disponible">Disponible</span>
+          <h3>${escapeHtml(p.titulo)}</h3>
+          <div class="autor">${escapeHtml(p.autor)}</div>
+          <div class="dueno">Lo presta: ${escapeHtml(p.dueno)}</div>
+          <div class="lend-request">
+            <input type="text" placeholder="Tu nombre para solicitarlo" id="req-${p.id}">
+            <button type="button" data-request="${p.id}">Solicitar</button>
+          </div>`;
+      } else {
+        card.innerHTML = `
+          <span class="lend-status prestado">Prestado</span>
+          <h3>${escapeHtml(p.titulo)}</h3>
+          <div class="autor">${escapeHtml(p.autor)}</div>
+          <div class="dueno">Lo presta: ${escapeHtml(p.dueno)}</div>
+          <div class="lend-return">
+            <span>En manos de <strong>${escapeHtml(p.prestadoA)}</strong></span>
+            <button type="button" data-return="${p.id}">Marcar devuelto</button>
+          </div>`;
+      }
+      grid.appendChild(card);
+    });
+
+    grid.querySelectorAll('[data-request]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = Number(btn.dataset.request);
+        const input = document.getElementById('req-'+id);
+        const nombre = input.value.trim();
+        if(!nombre){ input.focus(); return; }
+        const p = prestamos.find(x=>x.id===id);
+        p.estado = 'prestado';
+        p.prestadoA = nombre;
+        renderPrestamos();
+      });
+    });
+    grid.querySelectorAll('[data-return]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = Number(btn.dataset.return);
+        const p = prestamos.find(x=>x.id===id);
+        p.estado = 'disponible';
+        p.prestadoA = '';
+        renderPrestamos();
+      });
+    });
+  }
+
+  document.getElementById('form-prestamo').addEventListener('submit', e=>{
+    e.preventDefault();
+    prestamos.push({
+      id: prestamoIdCounter++,
+      titulo: document.getElementById('p-titulo').value.trim(),
+      autor: document.getElementById('p-autor').value.trim(),
+      dueno: document.getElementById('p-dueno').value.trim(),
+      estado: 'disponible',
+      prestadoA: '',
+    });
+    e.target.reset();
+    renderPrestamos();
+  });
+
+  // ---------- init ----------
+  renderShelf();
+  renderSesiones();
+  renderIntegrantes();
+  renderPrestamos();
+</script>
+</body>
+</html>
